@@ -1,0 +1,34 @@
+# Build outputs
+[Bb]in/
+[Oo]bj/
+obj/
+[Rr]elease*/
+[Dd]ebug*/
+x64/
+x86/
+*.exe
+*.dll
+*.pdb
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build tools
+[Pp]ackages/
+[Tt]est[Rr]esult*/
+[Ll]og/
+*.cache
+
+# Rider / VS Code / JetBrains
+.idea/
+*.code-workspace
+
+# Others
+*.ncrunch*
+*.local.json
+obj/Debug/net8.0-windows/UniversalConnectionTester.AssemblyInfo.cs
+obj/Debug/net8.0-windows/UniversalConnectionTester.AssemblyInfoInputs.cache
