@@ -1,0 +1,29 @@
+{
+  "endpoints": [
+    {
+      "name": "Oracle HR Database",
+      "connectionString": "User Id=user;Password=pass;Data Source=//db-host:1521/ORCLPDB1;",
+      "connectionType": "oracle"
+    },
+    {
+      "name": "SQL Server Local",
+      "connectionString": "Server=localhost;Database=master;Trusted_Connection=True;TrustServerCertificate=True;",
+      "connectionType": "mssql"
+    },
+    {
+      "name": "HTTP Health",
+      "connectionString": "http://example.com/health",
+      "connectionType": "http"
+    },
+    {
+      "name": "HTTPS Status",
+      "connectionString": "https://example.com/status",
+      "connectionType": "https"
+    },
+    {
+      "name": "Ping Gateway",
+      "connectionString": "8.8.8.8",
+      "connectionType": "ping"
+    }
+  ]
+}
