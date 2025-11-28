@@ -17,6 +17,10 @@ namespace UniversalConnectionTester
     public partial class MainWindow : Window
     {
         private static readonly HttpClient HttpClient = new();
+        private static readonly HttpClient InsecureHttpClient = new(new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        });
 
         public MainWindow()
         {
@@ -121,19 +125,19 @@ namespace UniversalConnectionTester
         {
             return endpoint.ConnectionType switch
             {
-                ConnectionType.Mssql => await TestSqlServerAsync(endpoint.ConnectionString),
+                ConnectionType.Mssql => await TestSqlServerAsync(endpoint),
                 ConnectionType.Oracle => await TestOracleAsync(endpoint.ConnectionString),
-                ConnectionType.Http or ConnectionType.Https => await TestHttpAsync(endpoint.ConnectionString),
+                ConnectionType.Http or ConnectionType.Https => await TestHttpAsync(endpoint),
                 ConnectionType.Ping => await TestPingAsync(endpoint.ConnectionString),
                 _ => ConnectionTestResult.Fail("Unsupported connection type.")
             };
         }
 
-        private static async Task<ConnectionTestResult> TestSqlServerAsync(string connectionString)
+        private static async Task<ConnectionTestResult> TestSqlServerAsync(EndpointDefinition endpoint)
         {
             try
             {
-                var cs = EnsureSqlTimeout(connectionString);
+                var cs = BuildSqlConnectionString(endpoint.ConnectionString, endpoint.IgnoreSslErrors);
                 await using var connection = new SqlConnection(cs);
                 await connection.OpenAsync();
                 return ConnectionTestResult.Ok();
@@ -159,11 +163,14 @@ namespace UniversalConnectionTester
             }
         }
 
-        private static async Task<ConnectionTestResult> TestHttpAsync(string url)
+        private static async Task<ConnectionTestResult> TestHttpAsync(EndpointDefinition endpoint)
         {
             try
             {
-                using var response = await HttpClient.GetAsync(url);
+                var client = endpoint.IgnoreSslErrors ? InsecureHttpClient : HttpClient;
+                var url = endpoint.ConnectionString;
+
+                using var response = await client.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
                     return ConnectionTestResult.Ok();
@@ -211,12 +218,18 @@ namespace UniversalConnectionTester
             return $"{ex.GetType().Name}: {ex.Message}\nInner: {FormatException(ex.InnerException)}\n{ex.StackTrace}";
         }
 
-        private static string EnsureSqlTimeout(string connectionString)
+        private static string BuildSqlConnectionString(string connectionString, bool ignoreSslErrors)
         {
             var builder = new SqlConnectionStringBuilder(connectionString)
             {
                 ConnectTimeout = 10
             };
+
+            if (ignoreSslErrors)
+            {
+                builder.TrustServerCertificate = true;
+            }
+
             return builder.ConnectionString;
         }
 

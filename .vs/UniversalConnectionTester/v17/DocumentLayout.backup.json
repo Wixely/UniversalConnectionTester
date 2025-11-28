@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "C:\\Users\\X15\\source\\repos\\UniversalConnectionTester\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{967A9CE1-5177-4A40-9FB0-0B64B285B220}|UniversalConnectionTester.csproj|c:\\users\\x15\\source\\repos\\universalconnectiontester\\endpoints.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{967A9CE1-5177-4A40-9FB0-0B64B285B220}|UniversalConnectionTester.csproj|solutionrelative:endpoints.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{967A9CE1-5177-4A40-9FB0-0B64B285B220}|UniversalConnectionTester.csproj|c:\\users\\x15\\source\\repos\\universalconnectiontester\\universalconnectiontester.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{967A9CE1-5177-4A40-9FB0-0B64B285B220}|UniversalConnectionTester.csproj|solutionrelative:universalconnectiontester.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{967A9CE1-5177-4A40-9FB0-0B64B285B220}|UniversalConnectionTester.csproj|c:\\users\\x15\\source\\repos\\universalconnectiontester\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{967A9CE1-5177-4A40-9FB0-0B64B285B220}|UniversalConnectionTester.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{967A9CE1-5177-4A40-9FB0-0B64B285B220}|UniversalConnectionTester.csproj|c:\\users\\x15\\source\\repos\\universalconnectiontester\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{967A9CE1-5177-4A40-9FB0-0B64B285B220}|UniversalConnectionTester.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -14,17 +26,54 @@
       "DocumentGroups": [
         {
           "DockedWidth": 386,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UniversalConnectionTester",
+              "DocumentMoniker": "C:\\Users\\X15\\source\\repos\\UniversalConnectionTester\\UniversalConnectionTester.csproj",
+              "RelativeDocumentMoniker": "UniversalConnectionTester.csproj",
+              "ToolTip": "C:\\Users\\X15\\source\\repos\\UniversalConnectionTester\\UniversalConnectionTester.csproj",
+              "RelativeToolTip": "UniversalConnectionTester.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-11-27T13:59:07.131Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "endpoints.json",
+              "DocumentMoniker": "C:\\Users\\X15\\source\\repos\\UniversalConnectionTester\\endpoints.json",
+              "RelativeDocumentMoniker": "endpoints.json",
+              "ToolTip": "C:\\Users\\X15\\source\\repos\\UniversalConnectionTester\\endpoints.json",
+              "RelativeToolTip": "endpoints.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-27T13:36:23.936Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\X15\\source\\repos\\UniversalConnectionTester\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "MainWindow.xaml",
+              "ToolTip": "C:\\Users\\X15\\source\\repos\\UniversalConnectionTester\\MainWindow.xaml",
+              "RelativeToolTip": "MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-11-27T13:07:50.995Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\X15\\source\\repos\\UniversalConnectionTester\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\X15\\source\\repos\\UniversalConnectionTester\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIwAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-27T13:07:46.653Z",
               "EditorCaption": ""

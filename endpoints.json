@@ -8,7 +8,8 @@
     {
       "name": "SQL Server Local",
       "connectionString": "Server=localhost;Database=master;Trusted_Connection=True;TrustServerCertificate=True;",
-      "connectionType": "mssql"
+      "connectionType": "mssql",
+      "ignoreSslErrors": true
     },
     {
       "name": "HTTP Health",
@@ -18,7 +19,8 @@
     {
       "name": "HTTPS Status",
       "connectionString": "https://example.com/status",
-      "connectionType": "https"
+      "connectionType": "https",
+      "ignoreSslErrors": true
     },
     {
       "name": "Ping Gateway",

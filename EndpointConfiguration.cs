@@ -19,6 +19,9 @@ namespace UniversalConnectionTester
 
         [JsonPropertyName("connectionType")]
         public ConnectionType ConnectionType { get; set; }
+
+        [JsonPropertyName("ignoreSslErrors")]
+        public bool IgnoreSslErrors { get; set; }
     }
 
     public enum ConnectionType
