@@ -32,3 +32,4 @@ x86/
 *.local.json
 obj/Debug/net8.0-windows/UniversalConnectionTester.AssemblyInfo.cs
 obj/Debug/net8.0-windows/UniversalConnectionTester.AssemblyInfoInputs.cache
+.vs/UniversalConnectionTester/DesignTimeBuild/.dtbcache.v2
