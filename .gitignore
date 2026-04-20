@@ -22,6 +22,10 @@ x86/
 [Tt]est[Rr]esult*/
 [Ll]og/
 *.cache
+*.nuget.dgspec.json
+*.nuget.g.props
+project.assets.json
+project.nuget.cache
 
 # Rider / VS Code / JetBrains
 .idea/
