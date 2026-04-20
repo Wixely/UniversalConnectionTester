@@ -28,6 +28,7 @@ namespace UniversalConnectionTester
     {
         Oracle,
         Mssql,
+        Redis,
         Http,
         Https,
         Ping

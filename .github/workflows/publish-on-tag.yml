@@ -1,0 +1,99 @@
+name: Publish On Tag
+
+on:
+  push:
+    tags:
+      - "**"
+
+permissions:
+  contents: write
+
+jobs:
+  publish-win-x64:
+    runs-on: windows-latest
+    env:
+      APP_NAME: UniversalConnectionTester
+      PROJECT_FILE: UniversalConnectionTester.csproj
+      CONFIGURATION: Release
+      RUNTIME_ID: win-x64
+      ARTIFACT_DIR: ${{ github.workspace }}\artifacts
+      PUBLISH_DIR: ${{ github.workspace }}\artifacts\publish
+      STAGING_DIR: ${{ github.workspace }}\artifacts\staging
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        shell: pwsh
+        run: dotnet restore $env:PROJECT_FILE
+
+      - name: Publish single-file win-x64 build
+        shell: pwsh
+        run: |
+          dotnet publish $env:PROJECT_FILE `
+            -c $env:CONFIGURATION `
+            -r $env:RUNTIME_ID `
+            --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:DebugType=None `
+            -p:DebugSymbols=false `
+            -o $env:PUBLISH_DIR
+
+      - name: Package versioned release
+        id: package
+        shell: pwsh
+        run: |
+          $tag = "${env:GITHUB_REF_NAME}"
+          $safeTag = $tag -replace '[^0-9A-Za-z._-]', '-'
+          $exeName = "{0}-{1}-{2}.exe" -f $env:APP_NAME, $safeTag, $env:RUNTIME_ID
+          $zipName = "{0}-{1}-{2}.zip" -f $env:APP_NAME, $safeTag, $env:RUNTIME_ID
+          $zipPath = Join-Path $env:ARTIFACT_DIR $zipName
+
+          if (Test-Path $env:STAGING_DIR) {
+            Remove-Item -LiteralPath $env:STAGING_DIR -Recurse -Force
+          }
+
+          New-Item -ItemType Directory -Force -Path $env:ARTIFACT_DIR | Out-Null
+          New-Item -ItemType Directory -Force -Path $env:STAGING_DIR | Out-Null
+
+          Copy-Item -LiteralPath (Join-Path $env:PUBLISH_DIR "$($env:APP_NAME).exe") -Destination (Join-Path $env:STAGING_DIR $exeName)
+          Copy-Item -LiteralPath (Join-Path $env:PUBLISH_DIR "endpoints.json") -Destination (Join-Path $env:STAGING_DIR "endpoints.json")
+
+          if (Test-Path $zipPath) {
+            Remove-Item -LiteralPath $zipPath -Force
+          }
+
+          Compress-Archive -Path (Join-Path $env:STAGING_DIR "*") -DestinationPath $zipPath -Force
+
+          "zip_name=$zipName" >> $env:GITHUB_OUTPUT
+          "zip_path=$zipPath" >> $env:GITHUB_OUTPUT
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.package.outputs.zip_name }}
+          path: ${{ steps.package.outputs.zip_path }}
+          if-no-files-found: error
+
+      - name: Publish GitHub release asset
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $tag = "${env:GITHUB_REF_NAME}"
+          $zipPath = "${{ steps.package.outputs.zip_path }}"
+
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag $zipPath --clobber
+          }
+          else {
+            gh release create $tag $zipPath --title $tag --generate-notes
+          }

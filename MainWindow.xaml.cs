@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.NetworkInformation;
+using System.Net.Security;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Microsoft.Data.SqlClient;
 using Oracle.ManagedDataAccess.Client;
+using StackExchange.Redis;
 
 namespace UniversalConnectionTester
 {
@@ -127,6 +129,7 @@ namespace UniversalConnectionTester
             {
                 ConnectionType.Mssql => await TestSqlServerAsync(endpoint),
                 ConnectionType.Oracle => await TestOracleAsync(endpoint.ConnectionString),
+                ConnectionType.Redis => await TestRedisAsync(endpoint),
                 ConnectionType.Http or ConnectionType.Https => await TestHttpAsync(endpoint),
                 ConnectionType.Ping => await TestPingAsync(endpoint.ConnectionString),
                 _ => ConnectionTestResult.Fail("Unsupported connection type.")
@@ -155,6 +158,21 @@ namespace UniversalConnectionTester
                 var cs = EnsureOracleTimeout(connectionString);
                 await using var connection = new OracleConnection(cs);
                 await connection.OpenAsync();
+                return ConnectionTestResult.Ok();
+            }
+            catch (Exception ex)
+            {
+                return ConnectionTestResult.Fail(FormatException(ex));
+            }
+        }
+
+        private static async Task<ConnectionTestResult> TestRedisAsync(EndpointDefinition endpoint)
+        {
+            try
+            {
+                var options = BuildRedisConfiguration(endpoint.ConnectionString, endpoint.IgnoreSslErrors);
+                using var connection = await ConnectionMultiplexer.ConnectAsync(options);
+                await connection.GetDatabase().PingAsync();
                 return ConnectionTestResult.Ok();
             }
             catch (Exception ex)
@@ -238,6 +256,26 @@ namespace UniversalConnectionTester
             var builder = new OracleConnectionStringBuilder(connectionString);
             builder["Connection Timeout"] = 10;
             return builder.ConnectionString;
+        }
+
+        private static ConfigurationOptions BuildRedisConfiguration(string connectionString, bool ignoreSslErrors)
+        {
+            var options = ConfigurationOptions.Parse(connectionString);
+            options.ConnectTimeout = 10000;
+            options.AsyncTimeout = 10000;
+            options.SyncTimeout = 10000;
+
+            if (ignoreSslErrors)
+            {
+                options.CheckCertificateRevocation = false;
+                options.SslClientAuthenticationOptions = static host => new SslClientAuthenticationOptions
+                {
+                    TargetHost = host,
+                    RemoteCertificateValidationCallback = static (_, _, _, _) => true
+                };
+            }
+
+            return options;
         }
 
         private void ShowErrorDialog(string title, string message)

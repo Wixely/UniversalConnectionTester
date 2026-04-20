@@ -17,6 +17,11 @@
       "connectionType": "http"
     },
     {
+      "name": "Redis Cache",
+      "connectionString": "localhost:6379,abortConnect=false",
+      "connectionType": "redis"
+    },
+    {
       "name": "HTTPS Status",
       "connectionString": "https://example.com/status",
       "connectionType": "https",
